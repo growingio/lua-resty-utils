@@ -24,6 +24,14 @@ function _M.exec(self, func)
         errlog("Cannot connect, host: " .. self.host .. ", port: " .. self.port)
         return nil, err
     end
+    
+    if self.password then
+        local res, err = red:auth(self.password)
+            if not res then
+                ngx.say("failed to authenticate: ", err)
+                return
+        end
+    end
 
     red:select(self.database)
 
